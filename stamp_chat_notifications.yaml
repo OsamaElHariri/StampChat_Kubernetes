@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stamp-chat-notifications
+  labels:
+    app: stamp-chat-notifications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stamp-chat-notifications
+  template:
+    metadata:
+      labels:
+        app: stamp-chat-notifications
+    spec:
+      initContainers:
+      - name: init-stamp-chat-notifications
+        image: osamadev/stamp_chat_notifications:0.1.0
+        env:
+        - name: PORT
+          value: "3001"
+        - name: DATABASE_URL
+          value: "postgres://some_user:password@172.17.0.7:5432/stamp_chat"
+        command: ['sh', '-c', '/app/node_modules/.bin/knex migrate:latest']
+      containers:
+      - name: stamp-chat-notifications
+        image: osamadev/stamp_chat_notifications:0.1.0
+        ports:
+        - containerPort: 3001
+        env:
+        - name: PORT
+          value: "3001"
+        - name: DATABASE_URL
+          value: "postgres://some_user:password@172.17.0.7:5432/stamp_chat"
+        - name: FIREBASE_SERVICE_ACCOUNT
+          valueFrom:
+            secretKeyRef:
+              name: firebase-secret
+              key: firebase_service_account
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stamp-chat-notifications
+spec:
+  ports:
+  - name: http
+    port: 3001
+    targetPort: 3001
+  selector:
+    app: stamp-chat-notifications

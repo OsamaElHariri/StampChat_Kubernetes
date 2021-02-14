@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stamp-chat-channels
+  labels:
+    app: stamp-chat-channels
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stamp-chat-channels
+  template:
+    metadata:
+      labels:
+        app: stamp-chat-channels
+    spec:
+      initContainers:
+      - name: init-stamp-chat-channels
+        image: osamadev/stamp_chat_channels:0.1.5
+        env:
+        - name: DB_URL
+          value: "ecto://some_user:password@172.17.0.3:5432/stamp_chat"
+        - name: PORT
+          value: "4000"
+        - name: SECRET_KEY_BASE
+          value: abc123abc1232
+        command: ['sh', '-c', '/home/app/prod/rel/chat/bin/chat eval "Chat.Release.migrate"']
+      containers:
+      - name: stamp-chat-channels
+        image: osamadev/stamp_chat_channels:0.1.5
+        ports:
+        - containerPort: 4000
+        env:
+        - name: PORT
+          value: "4000"
+        - name: SECRET_KEY_BASE
+          value: abc123abc123
+        - name: DB_URL
+          value: "ecto://some_user:password@172.17.0.3:5432/stamp_chat"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stamp-chat-channels
+spec:
+  ports:
+  - name: http
+    port: 4000
+    targetPort: 4000
+  selector:
+    app: stamp-chat-channels

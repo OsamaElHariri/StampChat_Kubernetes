@@ -1,0 +1,16 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: mapping-stamp-chat-auth
+spec:
+  prefix: /auth/
+  service: stamp-chat-auth.default:3000
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: mapping-stamp-chat-channels
+spec:
+  prefix: /chat/
+  service: stamp-chat-channels.default:4000

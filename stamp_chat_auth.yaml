@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stamp-chat-auth
+  labels:
+    app: stamp-chat-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stamp-chat-auth
+  template:
+    metadata:
+      labels:
+        app: stamp-chat-auth
+    spec:
+      initContainers:
+      - name: init-stamp-chat-auth
+        image: osamadev/stamp_chat_auth:0.1.3
+        env:
+        - name: DATABASE_URL
+          value: "postgres://some_user:password@172.17.0.13:5432/stamp_chat"
+        command: ['sh', '-c', '/app/node_modules/.bin/knex migrate:latest']
+      containers:
+      - name: stamp-chat-auth
+        image: osamadev/stamp_chat_auth:0.1.3
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          value: "postgres://some_user:password@172.17.0.13:5432/stamp_chat"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stamp-chat-auth
+spec:
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+  selector:
+    app: stamp-chat-auth

@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-stamp-chat-notifications
+  labels:
+    app: db-stamp-chat-notifications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-stamp-chat-notifications
+  template:
+    metadata:
+      labels:
+        app: db-stamp-chat-notifications
+    spec:
+      containers:
+      - name: postgres-stamp-chat-notifications
+        image: postgres:12-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          value: "password"
+        - name: POSTGRES_USER
+          value: "some_user"
+        - name: POSTGRES_DB
+          value: "stamp_chat"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-stamp-chat-notifications
+spec:
+  ports:
+  - name: http
+    port: 5432
+    targetPort: 5432
+  selector:
+    app: db-stamp-chat-notifications

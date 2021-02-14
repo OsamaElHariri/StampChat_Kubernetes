@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-stamp-chat-channel
+  labels:
+    app: db-stamp-chat-channel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-stamp-chat-channel
+  template:
+    metadata:
+      labels:
+        app: db-stamp-chat-channel
+    spec:
+      containers:
+      - name: postgres-stamp-chat-auth
+        image: postgres:12-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          value: "password"
+        - name: POSTGRES_DB
+          value: "stamp_chat"
+        - name: POSTGRES_USER
+          value: "some_user"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-stamp-chat-channel
+spec:
+  ports:
+  - name: http
+    port: 5432
+    targetPort: 5432
+  selector:
+    app: db-stamp-chat-channel
