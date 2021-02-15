@@ -29,6 +29,11 @@ spec:
         env:
         - name: DATABASE_URL
           value: "postgres://some_user:password@172.17.0.13:5432/stamp_chat"
+        - name: FIREBASE_SERVICE_ACCOUNT
+          valueFrom:
+            secretKeyRef:
+              name: firebase-secret
+              key: firebase_service_account
 ---
 apiVersion: v1
 kind: Service
