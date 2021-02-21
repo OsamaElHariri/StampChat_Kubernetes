@@ -14,3 +14,11 @@ metadata:
 spec:
   prefix: /chat/
   service: stamp-chat-channels.default:4000
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: mapping-stamp-chat-notifications
+spec:
+  prefix: /notifications/
+  service: stamp-chat-notifications.default:3001
