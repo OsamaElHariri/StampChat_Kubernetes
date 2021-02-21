@@ -18,6 +18,8 @@ spec:
       - name: init-stamp-chat-channels
         image: osamadev/stamp_chat_channels:0.1.6
         env:
+        - name: MIX_ENV
+          value: "prod"
         - name: DB_URL
           valueFrom:
             secretKeyRef:
@@ -34,6 +36,8 @@ spec:
         ports:
         - containerPort: 4000
         env:
+        - name: MIX_ENV
+          value: "prod"
         - name: PORT
           value: "4000"
         - name: SECRET_KEY_BASE
