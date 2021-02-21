@@ -21,7 +21,10 @@ spec:
         - name: PORT
           value: "3001"
         - name: DATABASE_URL
-          value: "postgres://some_user:password@172.17.0.7:5432/stamp_chat"
+          valueFrom:
+            secretKeyRef:
+              name: notifications-stamp-chat-secret
+              key: database_url
         command: ['sh', '-c', '/app/node_modules/.bin/knex migrate:latest']
       containers:
       - name: stamp-chat-notifications
@@ -32,7 +35,10 @@ spec:
         - name: PORT
           value: "3001"
         - name: DATABASE_URL
-          value: "postgres://some_user:password@172.17.0.7:5432/stamp_chat"
+          valueFrom:
+            secretKeyRef:
+              name: notifications-stamp-chat-secret
+              key: database_url
         - name: FIREBASE_SERVICE_ACCOUNT
           valueFrom:
             secretKeyRef:

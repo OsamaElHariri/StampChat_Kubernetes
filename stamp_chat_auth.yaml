@@ -19,7 +19,10 @@ spec:
         image: osamadev/stamp_chat_auth:0.1.3
         env:
         - name: DATABASE_URL
-          value: "postgres://some_user:password@172.17.0.13:5432/stamp_chat"
+          valueFrom:
+            secretKeyRef:
+              name: auth-stamp-chat-secret
+              key: database_url
         command: ['sh', '-c', '/app/node_modules/.bin/knex migrate:latest']
       containers:
       - name: stamp-chat-auth
@@ -28,7 +31,10 @@ spec:
         - containerPort: 3000
         env:
         - name: DATABASE_URL
-          value: "postgres://some_user:password@172.17.0.13:5432/stamp_chat"
+          valueFrom:
+            secretKeyRef:
+              name: auth-stamp-chat-secret
+              key: database_url
         - name: FIREBASE_SERVICE_ACCOUNT
           valueFrom:
             secretKeyRef:

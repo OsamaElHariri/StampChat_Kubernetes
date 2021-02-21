@@ -19,7 +19,10 @@ spec:
         image: osamadev/stamp_chat_channels:0.1.5
         env:
         - name: DB_URL
-          value: "ecto://some_user:password@172.17.0.3:5432/stamp_chat"
+          valueFrom:
+            secretKeyRef:
+              name: channels-stamp-chat-secret
+              key: database_url
         - name: PORT
           value: "4000"
         - name: SECRET_KEY_BASE
@@ -36,7 +39,10 @@ spec:
         - name: SECRET_KEY_BASE
           value: abc123abc123
         - name: DB_URL
-          value: "ecto://some_user:password@172.17.0.3:5432/stamp_chat"
+          valueFrom:
+            secretKeyRef:
+              name: channels-stamp-chat-secret
+              key: database_url
 ---
 apiVersion: v1
 kind: Service
