@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
       - name: init-stamp-chat-channels
-        image: osamadev/stamp_chat_channels:0.1.12
+        image: osamadev/stamp_chat_channels:0.1.17
         env:
         - name: MIX_ENV
           value: "prod"
@@ -29,10 +29,12 @@ spec:
           value: "4000"
         - name: SECRET_KEY_BASE
           value: abc123abc1232
+        - name: PRIVATE_KEY
+          value: abc123abc1232
         command: ['sh', '-c', '/home/app/prod/rel/chat/bin/chat eval "Chat.Release.migrate"']
       containers:
       - name: stamp-chat-channels
-        image: osamadev/stamp_chat_channels:0.1.12
+        image: osamadev/stamp_chat_channels:0.1.17
         ports:
         - containerPort: 4000
         env:

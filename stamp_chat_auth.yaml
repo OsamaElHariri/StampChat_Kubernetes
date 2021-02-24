@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
       - name: init-stamp-chat-auth
-        image: osamadev/stamp_chat_auth:0.1.4
+        image: osamadev/stamp_chat_auth:0.1.5
         env:
         - name: DATABASE_URL
           valueFrom:
@@ -26,7 +26,7 @@ spec:
         command: ['sh', '-c', '/app/node_modules/.bin/knex migrate:latest']
       containers:
       - name: stamp-chat-auth
-        image: osamadev/stamp_chat_auth:0.1.4
+        image: osamadev/stamp_chat_auth:0.1.5
         ports:
         - containerPort: 3000
         env:
