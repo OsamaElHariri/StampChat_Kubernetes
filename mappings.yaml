@@ -14,6 +14,8 @@ metadata:
 spec:
   prefix: /chat/
   service: stamp-chat-channels.default:4000
+  allow_upgrade:
+  - websocket
 ---
 apiVersion: getambassador.io/v2
 kind: Mapping
