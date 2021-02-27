@@ -1,0 +1,21 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: acme-challenge-mapping
+spec:
+  prefix: /.well-known/acme-challenge/
+  rewrite: ""
+  service: acme-challenge-service.ambassador
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: ambassador
+  name: acme-challenge-service
+spec:
+  ports:
+  - port: 80
+    targetPort: 8089
+  selector:
+    acme.cert-manager.io/http01-solver: "true"
