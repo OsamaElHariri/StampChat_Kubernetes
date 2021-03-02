@@ -24,3 +24,14 @@ metadata:
 spec:
   prefix: /notifications/
   service: stamp-chat-notifications.default:3001
+---
+apiVersion: getambassador.io/v2
+kind:  Mapping
+metadata:
+  name: internal-routes
+spec:
+  precedence: 1
+  prefix: ".*/internal/.*"
+  prefix_regex: true
+  rewrite: "/404/"
+  service: localhost:8500
