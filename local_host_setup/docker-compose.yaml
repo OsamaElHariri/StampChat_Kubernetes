@@ -1,0 +1,43 @@
+version: '3.4'
+volumes:
+  db_stampchat_auth:
+  db_stampchat_channels:
+  db_stampchat_notifications:
+services:
+  db_auth:
+    image: postgres
+    ports:
+      - "5400:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=some_user
+      - POSTGRES_DB=stamp_chat
+    volumes:
+      - db_stampchat_auth:/var/lib/postgresql/data
+  db_channels:
+    image: postgres
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=some_user
+      - POSTGRES_DB=stamp_chat
+    volumes:
+      - db_stampchat_channels:/var/lib/postgresql/data
+  db_notifications:
+    image: postgres
+    ports:
+      - "5410:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=some_user
+      - POSTGRES_DB=stamp_chat
+    volumes:
+      - db_stampchat_notifications:/var/lib/postgresql/data
+  nginx:
+    image: nginx
+    network_mode: host
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
